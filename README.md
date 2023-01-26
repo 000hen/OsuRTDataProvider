@@ -1,6 +1,6 @@
 # OsuRTDataProviderDLL
-This is a edited fork repository from OsuRTDataProvider.
-Supports OSU! and OSU!Tourney.  
+This is an edited fork repository from OsuRTDataProvider.
+It supports OSU! and OSU!Tourney.  
   
 OsuRTDataProvider can be obtained from [OSU!](https://osu.ppy.sh)(Stable Only):
 * Beatmap
@@ -22,10 +22,10 @@ OsuRTDataProvider can be obtained from [OSU!](https://osu.ppy.sh)(Stable Only):
 OSU! Clinet Version Requirements: **b20190816 After**  
 
 # How to use?
-Build this repository from source in Visual Studio.  
+Build this repository from the source in Visual Studio.  
 Then, use the output dll.
 
-You can use this dll in Python (with pythonnet) or any other languages.
+You can use this dll in Python (with pythonnet) or any other language. But you have to enable this plugin from `OsuRTDataProviderPlugin.Enable` in namespace `OsuRTDataProvider` to enable.
 
 # API
 #### OsuRTDataProviderPlugin ***class***
