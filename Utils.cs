@@ -1,5 +1,4 @@
-﻿using Sync.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -69,17 +68,15 @@ namespace OsuRTDataProvider
 
     public static class Logger
     {
-        static Logger<OsuRTDataProviderPlugin> logger=new Logger<OsuRTDataProviderPlugin>();
-
-        public static void Info(string message) => logger.LogInfomation(message);
+        public static void Info(string message) => Console.WriteLine(message);
 
         public static void Debug(string message)
         {
             if (Setting.DebugMode)
-                logger.LogInfomation(message);
+                Console.WriteLine(message);
         }
 
-        public static void Error(string message) => logger.LogError(message);
-        public static void Warn(string message) => logger.LogWarning(message);
+        public static void Error(string message) => Console.Error.WriteLine(message);
+        public static void Warn(string message) => Console.WriteLine(message);
     }
 }

@@ -1,5 +1,7 @@
-﻿using Sync.Tools;
-using Sync.Tools.ConfigurationAttribute;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace OsuRTDataProvider
 {
@@ -23,14 +25,35 @@ namespace OsuRTDataProvider
         public static LanguageElement LANG_INIT_HIT_EVENT_FAIL = "[ID:{0}]Init HitEventFinder Failed! Retry after {1} seconds";
 
         public static LanguageElement LANG_BEATMAP_NOT_FOUND = "Beatmap not found";
+    }
 
-        public static GuiLanguageElement ListenInterval = "Listen interval(ms)";
-        public static GuiLanguageElement EnableTourneyMode = "Tourney mode";
-        public static GuiLanguageElement TeamSize = "Team size";
-        public static GuiLanguageElement DebugMode = "Debug mode";
-        public static GuiLanguageElement ForceOsuSongsDirectory = "Force OSU! songs directory";
-        public static GuiLanguageElement GameMode = "Game Mode";
-        public static GuiLanguageElement DisableProcessNotFoundInformation = "Disable OSU! process not found information";
-        public static GuiLanguageElement EnableModsChangedAtListening = "Enable Mods Changed At Listening(Experimental)";
+    public interface I18nProvider
+    {
+
+    }
+
+    public struct LanguageElement
+    {
+        private string value;
+
+        public LanguageElement(string defaultVal)
+        {
+            value = defaultVal;
+        }
+
+        public static implicit operator LanguageElement(string val)
+        {
+            return new LanguageElement(val);
+        }
+
+        public static implicit operator string(LanguageElement element)
+        {
+            return element.value;
+        }
+
+        public override string ToString()
+        {
+            return value;
+        }
     }
 }

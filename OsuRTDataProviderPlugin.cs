@@ -2,9 +2,6 @@
 using OsuRTDataProvider.Helper;
 using OsuRTDataProvider.Listen;
 using OsuRTDataProvider.Mods;
-using Sync;
-using Sync.Plugins;
-using Sync.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,14 +11,11 @@ using static OsuRTDataProvider.Listen.OsuListenerManager;
 
 namespace OsuRTDataProvider
 {
-    [SyncPluginID("7216787b-507b-4eef-96fb-e993722acf2e", VERSION)]
-    public class OsuRTDataProviderPlugin : Plugin
+    public class OsuRTDataProviderPlugin
     {
-        public const string PLUGIN_NAME = "OsuRTDataProvider";
-        public const string PLUGIN_AUTHOR = "KedamaOvO";
-        public const string VERSION = "1.7.0";
-
-        private PluginConfigurationManager m_config_manager;
+        public const string NAME = "OsuRTDataProviderDLL";
+        public const string AUTHOR = "Muisnow";
+        public const string VERSION = "0.0.1";
 
         private OsuListenerManager[] m_listener_managers = new OsuListenerManager[16];
         private int m_listener_managers_count = 0;
@@ -45,35 +39,8 @@ namespace OsuRTDataProvider
         /// </summary>
         public OsuListenerManager[] TourneyListenerManagers { get => Setting.EnableTourneyMode ? m_listener_managers : null; }
 
-        public OsuRTDataProviderPlugin() : base(PLUGIN_NAME, PLUGIN_AUTHOR)
+        public void Enable()
         {
-            I18n.Instance.ApplyLanguage(new DefaultLanguage());
-            m_config_manager = new PluginConfigurationManager(this);
-            m_config_manager.AddItem(new SettingIni());
-
-            if (Setting.DebugMode)
-            {
-                base.EventBus.BindEvent<PluginEvents.ProgramReadyEvent>((e) =>
-                    HardwareInformationHelper.PrintHardwareInformation());
-            }
-
-            base.EventBus.BindEvent<PluginEvents.InitCommandEvent>(InitCommand);
-            base.EventBus.BindEvent<PluginEvents.ProgramReadyEvent>((e) => {
-                Logger.Info(string.Format(DefaultLanguage.LANG_TOURNEY_HINT, Setting.EnableTourneyMode));
-                Task.Run(()=>UpdateChecker.CheckUpdate());
-            });
-
-            try
-            {
-                File.Delete("OsuRTDataProviderRelease.dll");
-            }
-            catch (Exception) { }
-        }
-
-        public override void OnEnable()
-        {
-            Sync.Tools.IO.CurrentIO.WriteColor(PLUGIN_NAME + " By " + PLUGIN_AUTHOR, ConsoleColor.DarkCyan);
-
             if (Setting.EnableTourneyMode)
             {
                 m_listener_managers_count = Setting.TeamSize * 2;
@@ -84,6 +51,8 @@ namespace OsuRTDataProvider
             {
                 InitManager();
             }
+
+            Logger.Info("Starting RTDPP");
 
             DebugOutput(Setting.DebugMode, true);
         }
@@ -98,34 +67,6 @@ namespace OsuRTDataProvider
         {
             m_listener_managers[0] = new OsuListenerManager();
             m_listener_managers[0].Start();
-        }
-
-        private void InitCommand(PluginEvents.InitCommandEvent @e)
-        {
-            @e.Commands.Dispatch.bind("ortdp", (args) =>
-             {
-                 if(args.Count >= 1)
-                 {
-                     if(args[0] == "releases")
-                     {
-                         System.Diagnostics.Process.Start("https://github.com/OsuSync/OsuRTDataProvider/releases");
-                     }
-                 }
-
-                 if (args.Count >= 2)
-                 {
-                     if (args[0] == "debug")
-                     {
-                         if (bool.TryParse(args[1], out bool f))
-                         {
-                             DebugOutput(f);
-                             Logger.Info($"Debug mode = {Setting.DebugMode}");
-                         }
-                     }
-                     return true;
-                 }
-                 return false;
-             }, "OsuRTDataProvider control panel");
         }
 
         private void DebugOutput(bool enable, bool first = false)
@@ -218,7 +159,7 @@ namespace OsuRTDataProvider
             Setting.DebugMode = enable;
         }
 
-        public override void OnDisable()
+        public void Disable()
         {
             int size = Setting.EnableTourneyMode ? TourneyListenerManagersCount : 1;
             for (int i = 0; i < size; i++)
@@ -227,9 +168,9 @@ namespace OsuRTDataProvider
             }
         }
 
-        public override void OnExit()
+        public void Exit()
         {
-            OnDisable();
+            Disable();
         }
     }
 }

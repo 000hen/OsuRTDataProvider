@@ -1,7 +1,6 @@
-[中文](https://github.com/KedamaOvO/OsuRTDataProvider-Release/blob/master/README-CN.md)  
-# What is OsuRTDataProvider?
-OsuRTDataProvider is an [OsuSync](https://github.com/Deliay/osuSync) plugin.  
-it's support OSU! and OSU!Tourney.  
+# OsuRTDataProviderDLL
+This is a edited fork repository from OsuRTDataProvider.
+Supports OSU! and OSU!Tourney.  
   
 OsuRTDataProvider can be obtained from [OSU!](https://osu.ppy.sh)(Stable Only):
 * Beatmap
@@ -23,23 +22,10 @@ OsuRTDataProvider can be obtained from [OSU!](https://osu.ppy.sh)(Stable Only):
 OSU! Clinet Version Requirements: **b20190816 After**  
 
 # How to use?
-1. Download [OsuSync](https://github.com/Deliay/osuSync)
-2. Download [OsuRTDataProvider](https://github.com/KedamaOvO/OsuRTDataProvider-Release/releases).
-3. Copy OsuRTDataProvider to {OsuSync Path}/Plugins.
-4. Run OsuSync.
+Build this repository from source in Visual Studio.  
+Then, use the output dll.
 
-# Config.ini
-[OsuRTDataProvider.SettingIni]
-
-|Setting Name|Default Value|Description|
-| ----- | ----- | ----- |
-| ListenInterval | 100 | Listen data interval(ms). PS: If it is too small may lag |
-| EnableTourneyMode | False | Is tourney client?(Experimental)|
-| TeamSize | 1 | Tourney client team size|
-| ForceOsuSongsDirectory |  | Force search for Beatmap from this path|
-| GameMode | Auto |If ModeFinder initialization fails. Please manually select the current Mode.|
-| DisableProcessNotFoundInformation | False | Hide "Not found osu!.exe process"|
-| EnableModsChangedAtListening | False | Try to monitor Mods changes in non-Play status|
+You can use this dll in Python (with pythonnet) or any other languages.
 
 # API
 #### OsuRTDataProviderPlugin ***class***
@@ -150,9 +136,4 @@ OSU! Clinet Version Requirements: **b20190816 After**
             Editing,
             Rank
         }
-```
-# How to use?(Dev)
-```csharp
-var ortdp = getHoster().EnumPluings().FirstOrDefault(p => p.Name == "OsuRTDataProvider") as OsuRTDataProviderPlugin;
-ortdp.ListenerManager.OnBeatmapChanged+=(b)=>{/*...*/};
 ```
